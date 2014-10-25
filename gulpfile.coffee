@@ -41,7 +41,7 @@ htmlHeader = fs.readFileSync('h5bp-header.html').toString('utf8')
 htmlFooter = fs.readFileSync('h5bp-footer.html').toString('utf8')
 
 gulp.task 'copy', ->
-  gulp.src(paths.assets)
+  gulp.src(paths.assets+'/**/*', base: paths.assets)
   .pipe gulp.dest(paths.build)
   .pipe browserSync.reload({stream: true})
   
@@ -92,7 +92,7 @@ gulp.task('default', ['sass', 'js', 'html', 'copy', 'bs-init'], ->
   gulp.watch(paths.sass, ['css'])
   gulp.watch(paths.js, ['js'])
   gulp.watch(paths.html, ['html'])
-  gulp.watch(paths.assets, ['copy'])
+  gulp.watch(paths.assets+'**/*', ['copy'])
 )
   
   
