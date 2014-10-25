@@ -88,7 +88,7 @@ gulp.task 'bs-init', ->
     server:
       baseDir: paths.build
   
-gulp.task('default', ['css', 'js', 'html', 'copy', 'bs-init'], ->
+gulp.task('default', ['sass', 'js', 'html', 'copy', 'bs-init'], ->
   gulp.watch(paths.sass, ['css'])
   gulp.watch(paths.js, ['js'])
   gulp.watch(paths.html, ['html'])
