@@ -62,6 +62,7 @@ gulp.task 'sass', ->
   .pipe sass(errLogToConsole: true)
   .pipe autoprefixer(['> 1%', 'last 2 versions', 'IE 8'])
   .pipe gulp.dest(paths.dest.css)
+  .pipe browserSync.reload({stream: true})
   .pipe minifycss()
   .pipe rename({ suffix: '.min' })
   .pipe header(banner, {pkg: pkg})
@@ -71,12 +72,14 @@ gulp.task 'sass', ->
 gulp.task 'js', ->
   gulp.src(paths.vendorjs)
   .pipe gulp.dest(paths.dest.vendorjs)
+  .pipe browserSync.reload({stream: true, once: true})
   
   gulp.src(paths.js)
   .pipe jshint('.jshintrc')
   .pipe jshint.reporter('default')
   .pipe header(banner, {pkg: pkg})
   .pipe gulp.dest(paths.dest.js)
+  .pipe browserSync.reload({stream: true, once: true})
   .pipe uglify()
   .pipe header(banner, {pkg: pkg})
   .pipe rename(suffix: '.min')
@@ -84,12 +87,12 @@ gulp.task 'js', ->
   .pipe browserSync.reload({stream: true, once: true})
   
 gulp.task 'bs-init', ->
-  browserSync.init null,
+  browserSync.init
     server:
       baseDir: paths.build
   
 gulp.task('default', ['sass', 'js', 'html', 'copy', 'bs-init'], ->
-  gulp.watch(paths.sass, ['css'])
+  gulp.watch(paths.sass, ['sass'])
   gulp.watch(paths.js, ['js'])
   gulp.watch(paths.html, ['html'])
   gulp.watch(paths.assets+'**/*', ['copy'])
