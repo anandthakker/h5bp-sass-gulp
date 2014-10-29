@@ -95,7 +95,7 @@ gulp.task('default', ['sass', 'js', 'html', 'copy', 'bs-init'], ->
   gulp.watch(paths.sass, ['sass'])
   gulp.watch(paths.js, ['js'])
   gulp.watch(paths.html, ['html'])
-  gulp.watch(paths.assets+'**/*', ['copy'])
+  gulp.watch(paths.assets+'/**/*', ['copy'])
 )
   
   

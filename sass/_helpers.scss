@@ -1,4 +1,22 @@
 
+@mixin justify-children($child-selector:'& > *') {
+  /* justify children: equally space inline-block'ed child elements.
+     optional parameter $child-selector defaults to & > *, i.e., direct
+     children of the containing element. */
+  text-align: justify;
+  #{$child-selector} { display: inline-block; }
+  &:after {
+    content: ' ';
+    display: inline-block;
+    width: 100%;
+  }
+}
+
+$font-size-base: 16px !default;
+@function em($pixels, $context: $font-size-base) {
+  @return #{($pixels/$context)}em;
+}
+
 @mixin baseline($height, $shift) {
   height: $height;
   line-height: calc(2*#{$height} - 1em + #{$shift});
