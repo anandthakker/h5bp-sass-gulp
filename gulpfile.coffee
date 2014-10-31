@@ -39,6 +39,9 @@ banner = """/*!
 # HTML5 Boilerplate header and footer
 htmlHeader = fs.readFileSync('h5bp-header.html').toString('utf8')
 htmlFooter = fs.readFileSync('h5bp-footer.html').toString('utf8')
+# Site header and footer
+siteHeader = fs.readFileSync('site-header.html').toString('utf8')
+siteFooter = fs.readFileSync('site-footer.html').toString('utf8')
 
 gulp.task 'copy', ->
   gulp.src(paths.assets+'/**/*', base: paths.assets)
@@ -52,6 +55,8 @@ gulp.task 'clean', ->
 # Wrap each html file with HTML5 Boilerplate.
 gulp.task 'html', ->
   gulp.src(paths.html)
+  .pipe header(siteHeader, {pkg: pkg})
+  .pipe footer(siteFooter, {pkg: pkg})
   .pipe header(htmlHeader, {pkg: pkg, now: new Date()})
   .pipe footer(htmlFooter, {pkg: pkg})
   .pipe gulp.dest(paths.build)
@@ -75,8 +80,8 @@ gulp.task 'js', ->
   .pipe browserSync.reload({stream: true, once: true})
   
   gulp.src(paths.js)
-  .pipe jshint('.jshintrc')
-  .pipe jshint.reporter('default')
+  # .pipe jshint('.jshintrc')
+  # .pipe jshint.reporter('default')
   .pipe header(banner, {pkg: pkg})
   .pipe gulp.dest(paths.dest.js)
   .pipe browserSync.reload({stream: true, once: true})
@@ -90,7 +95,13 @@ gulp.task 'bs-init', ->
   browserSync.init
     server:
       baseDir: paths.build
-  
+      
+gulp.task('buildall', ['sass', 'js', 'html', 'copy'], ->)
+
+gulp.task('build', ['clean'], ->
+  gulp.start 'buildall'
+)
+
 gulp.task('default', ['sass', 'js', 'html', 'copy', 'bs-init'], ->
   gulp.watch(paths.sass, ['sass'])
   gulp.watch(paths.js, ['js'])
